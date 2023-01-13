@@ -60,9 +60,10 @@ public class CtrlProducto extends HttpServlet {
             e.printStackTrace();
         } finally {
             out.close();
+            
         }
     }
-
+//metodo para obetner los productos
     public String ObtenerProducto(HttpServletRequest request, HttpServletResponse response) {
         String JSONVal = "",idEmpresa="";
         HttpSession session = request.getSession(true);
