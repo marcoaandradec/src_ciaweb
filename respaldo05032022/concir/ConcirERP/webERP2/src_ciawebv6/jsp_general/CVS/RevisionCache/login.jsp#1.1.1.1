@@ -1,0 +1,66 @@
+<%-- 
+    Document   : login
+    Created on : 29/12/2009, 02:54:38 PM
+    Author     : marco
+--%>
+
+<%@page contentType="text/html" pageEncoding="ISO-8859-1"%>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<%
+
+            session.invalidate();
+
+%>
+<html>
+    <head>
+        <title>:: Bienvenido, - Argomex -::</title>
+        <link rel="SHORTCUT ICON" href="<%=request.getContextPath()%>/img/favico.ico">
+        <style>
+            .linkpowered{
+                font-family: Arial;
+                font-size: 10px;
+            }
+        </style>
+        <!-- Nuestras libraries -->
+        <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/iconos.css" />
+        <script type="text/javascript" language="javascript">var contexto = '<%= request.getContextPath()%>';</script>
+        <!-- Ext v4 libraries -->
+        <link rel="stylesheet" id="themecss" type="text/css" href="<%=request.getContextPath()%>/js/ext41/resources/css/ext-all-gray.css" />
+        <!--<script type="text/javascript" src="<%=request.getContextPath()%>/js/ext41/ext-all.js"></script>-->
+        <script type="text/javascript" src="<%=request.getContextPath()%>/js/ext41/ext-all-debug-w-comments.js"></script>
+        <script type="text/javascript" src="<%=request.getContextPath()%>/js/ext41/locale/ext-lang-es.js"></script>
+        <!-- End Ext libraries -->
+        <script type="text/javascript" src="<%=request.getContextPath()%>/js/CJL_CookieUtil.js"></script>
+        <script type="text/javascript" src="<%=request.getContextPath()%>/js/js_scripts/login.js"></script>
+    </head>
+    <body><br/><br/>
+        <form id="formLog" name="formLog" method="post" action="<%=request.getContextPath()%>/Usuario?bnd=13">
+        <input type="hidden" id="usuario" name="usuario"/>
+             </form>
+        <table width="100%" border="0" cellpadding="0" cellspacing="0">
+            <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+             <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td align="center">
+                    <div id="divLogin"></div>
+                </td>
+                <td>&nbsp;</td>
+            </tr>
+        </table>
+    </body>
+</html>

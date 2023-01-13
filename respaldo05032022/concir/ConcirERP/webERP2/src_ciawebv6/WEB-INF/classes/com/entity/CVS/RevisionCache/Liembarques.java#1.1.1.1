@@ -1,0 +1,466 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package com.entity;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+/**
+ *
+ * @author Sistemas
+ */
+@Entity
+@Table(name = "LIEMBARQUES")
+
+public class Liembarques implements Serializable {
+    private static final long serialVersionUID = 1L;
+    @Id
+    @Basic(optional = false)
+    @Column(name = "EMBCLAVE")
+    private Integer embclave;
+    @Column(name = "EMFOLIO")
+    private String emfolio;
+    @Column(name = "EMBREF")
+    private String embref;
+    @Basic(optional = false)
+    @Column(name = "EMBCLIENTE")
+    private Integer embcliente;
+    @Basic(optional = false)
+    @Column(name = "EMBCAJAS")
+    private Integer embcajas;
+    @Column(name = "EMBKILOS")
+    private Double embkilos;
+    @Basic(optional = false)
+    @Column(name = "EMBENVIO")
+    private Integer embenvio;
+    @Column(name = "EMBCOMS")
+    private String embcoms;
+    @Basic(optional = false)
+    @Column(name = "EMBFECHAFAC")
+    @Temporal(TemporalType.DATE)
+    private Date embfechafac;
+    @Basic(optional = false)
+    @Column(name = "EMBFECHAREC")
+    @Temporal(TemporalType.DATE)
+    private Date embfecharec;
+    @Column(name = "EMBFECHAPROG")
+    @Temporal(TemporalType.DATE)
+    private Date embfechaprog;
+    @Basic(optional = false)
+    @Column(name = "EMBUBICACION")
+    private String embubicacion;
+    @Basic(optional = false)
+    @Column(name = "EMBESTATUS")
+    private String embestatus;
+    @Column(name = "EMBGUIA")
+    private String embguia;
+    @Basic(optional = false)
+    @Column(name = "EMBFOLENTRADA")
+    private Integer embfolentrada;
+    @Column(name = "EMBFOLEMBARQUE")
+    private Integer embfolembarque;
+    @Column(name = "EMBFECEMBARQUE")
+    @Temporal(TemporalType.DATE)
+    private Date embfecembarque;
+    @Column(name = "EMBFOLDEVDOC")
+    private Integer embfoldevdoc;
+    @Column(name = "EMBFECDEVDOC")
+    @Temporal(TemporalType.DATE)
+    private Date embfecdevdoc;
+    @Column(name = "EMBFECENTREGA")
+    @Temporal(TemporalType.DATE)
+    private Date embfecentrega;
+    @Column(name = "EMBVALOR")
+    private Double embvalor;
+    @Column(name = "EMBTIPORECHAZO")
+    private String embtiporechazo;
+    @Column(name = "EMBACCION")
+    private String embaccion;
+    @Column(name = "EMBREFENTREGA")
+    private String embrefentrega;
+    @Basic(optional = false)
+    @Column(name = "EMBUSUARIO")
+    private Integer embusuario;
+    @Basic(optional = false)
+    @Column(name = "EMBFOLIO")
+    private Integer embfolio;
+    @Column(name = "EMBRACK")
+    private Integer embrack;
+    @Column(name = "EMBFORIGEN")
+    private Integer embforigen;
+    @Column(name = "EMBFECPEDIDO")
+    @Temporal(TemporalType.DATE)
+    private Date embfecpedido;
+    @Column(name = "EMBFECCANPED")
+    @Temporal(TemporalType.DATE)
+    private Date embfeccanped;
+    @JoinColumn(name = "EMBALMACEN", referencedColumnName = "ALMCLAVE")
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private Lialmacenes embalmacen;
+    @JoinColumn(name = "EMBCHOFER", referencedColumnName = "CHOCLAVE")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Lichoferes embchofer;
+    @JoinColumn(name = "EMBEMPRESA", referencedColumnName = "EMPCLAVE")
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private Liempresas embempresa;
+    @JoinColumn(name = "EMBESTADO", referencedColumnName = "ESTCLAVE")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Liestados embestado;
+    @JoinColumn(name = "EMBCONCRECHAZO", referencedColumnName = "MRECLAVE")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Limotrechazos embconcrechazo;
+    @JoinColumn(name = "EMBPOBLACION", referencedColumnName = "POBCLAVE")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Lipoblaciones embpoblacion;
+
+    public Liembarques() {
+    }
+
+    public Liembarques(Integer embclave) {
+        this.embclave = embclave;
+    }
+
+    public Liembarques(Integer embclave, Integer embcliente, int embcajas, Integer embenvio, Date embfechafac, Date embfecharec, String embubicacion, String embestatus, Integer embfolentrada, Integer embusuario, Integer embfolio) {
+        this.embclave = embclave;
+        this.embcliente = embcliente;
+        this.embcajas = embcajas;
+        this.embenvio = embenvio;
+        this.embfechafac = embfechafac;
+        this.embfecharec = embfecharec;
+        this.embubicacion = embubicacion;
+        this.embestatus = embestatus;
+        this.embfolentrada = embfolentrada;
+        this.embusuario = embusuario;
+        this.embfolio = embfolio;
+    }
+
+    public Integer getEmbclave() {
+        return embclave;
+    }
+
+    public void setEmbclave(Integer embclave) {
+        this.embclave = embclave;
+    }
+
+    public String getEmfolio() {
+        return emfolio;
+    }
+
+    public void setEmfolio(String emfolio) {
+        this.emfolio = emfolio;
+    }
+
+    public String getEmbref() {
+        return embref;
+    }
+
+    public void setEmbref(String embref) {
+        this.embref = embref;
+    }
+
+    public Integer getEmbcliente() {
+        return embcliente;
+    }
+
+    public void setEmbcliente(Integer embcliente) {
+        this.embcliente = embcliente;
+    }
+
+    public int getEmbcajas() {
+        return embcajas;
+    }
+
+    public void setEmbcajas(int embcajas) {
+        this.embcajas = embcajas;
+    }
+
+    public double getEmbkilos() {
+        return embkilos;
+    }
+
+    public void setEmbkilos(double embkilos) {
+        this.embkilos = embkilos;
+    }
+
+    public Integer getEmbenvio() {
+        return embenvio;
+    }
+
+    public void setEmbenvio(Integer embenvio) {
+        this.embenvio = embenvio;
+    }
+
+    public String getEmbcoms() {
+        return embcoms;
+    }
+
+    public void setEmbcoms(String embcoms) {
+        this.embcoms = embcoms;
+    }
+
+    public Date getEmbfechafac() {
+        return embfechafac;
+    }
+
+    public void setEmbfechafac(Date embfechafac) {
+        this.embfechafac = embfechafac;
+    }
+
+    public Date getEmbfecharec() {
+        return embfecharec;
+    }
+
+    public void setEmbfecharec(Date embfecharec) {
+        this.embfecharec = embfecharec;
+    }
+
+    public Date getEmbfechaprog() {
+        return embfechaprog;
+    }
+
+    public void setEmbfechaprog(Date embfechaprog) {
+        this.embfechaprog = embfechaprog;
+    }
+
+    public String getEmbubicacion() {
+        return embubicacion;
+    }
+
+    public void setEmbubicacion(String embubicacion) {
+        this.embubicacion = embubicacion;
+    }
+
+    public String getEmbestatus() {
+        return embestatus;
+    }
+
+    public void setEmbestatus(String embestatus) {
+        this.embestatus = embestatus;
+    }
+
+    public String getEmbguia() {
+        return embguia;
+    }
+
+    public void setEmbguia(String embguia) {
+        this.embguia = embguia;
+    }
+
+    public Integer getEmbfolentrada() {
+        return embfolentrada;
+    }
+
+    public void setEmbfolentrada(Integer embfolentrada) {
+        this.embfolentrada = embfolentrada;
+    }
+
+    public Integer getEmbfolembarque() {
+        return embfolembarque;
+    }
+
+    public void setEmbfolembarque(Integer embfolembarque) {
+        this.embfolembarque = embfolembarque;
+    }
+
+    public Date getEmbfecembarque() {
+        return embfecembarque;
+    }
+
+    public void setEmbfecembarque(Date embfecembarque) {
+        this.embfecembarque = embfecembarque;
+    }
+
+    public Integer getEmbfoldevdoc() {
+        return embfoldevdoc;
+    }
+
+    public void setEmbfoldevdoc(Integer embfoldevdoc) {
+        this.embfoldevdoc = embfoldevdoc;
+    }
+
+    public Date getEmbfecdevdoc() {
+        return embfecdevdoc;
+    }
+
+    public void setEmbfecdevdoc(Date embfecdevdoc) {
+        this.embfecdevdoc = embfecdevdoc;
+    }
+
+    public Date getEmbfecentrega() {
+        return embfecentrega;
+    }
+
+    public void setEmbfecentrega(Date embfecentrega) {
+        this.embfecentrega = embfecentrega;
+    }
+
+    public double getEmbvalor() {
+        return embvalor;
+    }
+
+    public void setEmbvalor(double embvalor) {
+        this.embvalor = embvalor;
+    }
+
+    public String getEmbtiporechazo() {
+        return embtiporechazo;
+    }
+
+    public void setEmbtiporechazo(String embtiporechazo) {
+        this.embtiporechazo = embtiporechazo;
+    }
+
+    public String getEmbaccion() {
+        return embaccion;
+    }
+
+    public void setEmbaccion(String embaccion) {
+        this.embaccion = embaccion;
+    }
+
+    public String getEmbrefentrega() {
+        return embrefentrega;
+    }
+
+    public void setEmbrefentrega(String embrefentrega) {
+        this.embrefentrega = embrefentrega;
+    }
+
+    public int getEmbusuario() {
+        return embusuario;
+    }
+
+    public void setEmbusuario(int embusuario) {
+        this.embusuario = embusuario;
+    }
+
+    public Integer getEmbfolio() {
+        return embfolio;
+    }
+
+    public void setEmbfolio(Integer embfolio) {
+        this.embfolio = embfolio;
+    }
+
+    public Integer getEmbrack() {
+        return embrack;
+    }
+
+    public void setEmbrack(Integer embrack) {
+        this.embrack = embrack;
+    }
+
+    public Integer getEmbforigen() {
+        return embforigen;
+    }
+
+    public void setEmbforigen(Integer embforigen) {
+        this.embforigen = embforigen;
+    }
+
+    public Date getEmbfecpedido() {
+        return embfecpedido;
+    }
+
+    public void setEmbfecpedido(Date embfecpedido) {
+        this.embfecpedido = embfecpedido;
+    }
+
+    public Date getEmbfeccanped() {
+        return embfeccanped;
+    }
+
+    public void setEmbfeccanped(Date embfeccanped) {
+        this.embfeccanped = embfeccanped;
+    }
+
+    public Lialmacenes getEmbalmacen() {
+        return embalmacen;
+    }
+
+    public void setEmbalmacen(Lialmacenes embalmacen) {
+        this.embalmacen = embalmacen;
+    }
+
+    public Lichoferes getEmbchofer() {
+        return embchofer;
+    }
+
+    public void setEmbchofer(Lichoferes embchofer) {
+        this.embchofer = embchofer;
+    }
+
+    public Liempresas getEmbempresa() {
+        return embempresa;
+    }
+
+    public void setEmbempresa(Liempresas embempresa) {
+        this.embempresa = embempresa;
+    }
+
+    public Liestados getEmbestado() {
+        return embestado;
+    }
+
+    public void setEmbestado(Liestados embestado) {
+        this.embestado = embestado;
+    }
+
+    public Limotrechazos getEmbconcrechazo() {
+        return embconcrechazo;
+    }
+
+    public void setEmbconcrechazo(Limotrechazos embconcrechazo) {
+        this.embconcrechazo = embconcrechazo;
+    }
+
+    public Lipoblaciones getEmbpoblacion() {
+        return embpoblacion;
+    }
+
+    public void setEmbpoblacion(Lipoblaciones embpoblacion) {
+        this.embpoblacion = embpoblacion;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (embclave != null ? embclave.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Liembarques)) {
+            return false;
+        }
+        Liembarques other = (Liembarques) object;
+        if ((this.embclave == null && other.embclave != null) || (this.embclave != null && !this.embclave.equals(other.embclave))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "com.entity.Liembarques[embclave=" + embclave + "]";
+    }
+
+}

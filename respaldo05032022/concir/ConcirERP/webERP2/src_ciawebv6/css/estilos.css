@@ -1,0 +1,18 @@
+/* 
+    Document   : estilos
+    Created on : 5/01/2010, 04:28:27 PM
+    Author     : marco
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+.LineVerde{
+    color:#390;
+    border: 1px solid #B5B8C8;
+    font-weight:bold;
+    border-style:solid;    
+}

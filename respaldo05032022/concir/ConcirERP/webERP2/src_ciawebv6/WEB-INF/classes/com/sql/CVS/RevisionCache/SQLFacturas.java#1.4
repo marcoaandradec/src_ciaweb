@@ -1,0 +1,83 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.sql;
+
+/**
+ *
+ * @author Marco Andrade
+ */
+public class SQLFacturas {
+
+    public static String obtFactura(String idFactura) {
+        return "select le.embfechafac,le.embfecpedido,le.embref,le.embenvio,le.embcliente,lc.clinombre,lp.pobclave,lp.pobnombre,"
+                + " le.embcajas,le.embkilos,le.embvalor,le.embcoms,le.embfolentrada,le.embfecharec,le.embguia,le.embubicacion,le.embfechaprog,"
+                + " le.embfeccanped,le.embfolembarque,le.embfecembarque,le.embfecentrega,le.embforigen,le.embrefentrega,le.embtiporechazo,"
+                + " le.embclave,le.embaccion,le.embfoldevdoc,le.embfecdevdoc"
+                + " from Liembarques le,Liclientes lc,Lipoblaciones lp"
+                + " where le.embempresa.empclave=?1 and (lc.clinumero=le.embcliente and lc.cliempresa=le.embempresa) "
+                + " and (lp.pobclave=le.embpoblacion) " + idFactura;
+    }
+
+    public static String BuscarFacturas(String fecha, String tipoCliente, String estatus, int idEmpresa, String orderBy) {
+        return "select le.embclave,le.embestatus,le.embfolio,le.embref,le.embtiporechazo,le.embenvio,le.embcliente,lc.clinombre,lp.pobclave,lp.pobnombre,le.embcajas,le.embvalor "
+                + " ,to_char(le.embfechafac,'dd/mm/yyyy')as embfechafac,to_char(le.embfecharec,'dd/mm/yyyy')as embfecharec,to_char(le.embfechaprog,'dd/mm/yyyy')as embfechaprog,"
+                + " to_char(le.embfecembarque,'dd/mm/yyyy')as embfecembarque,to_char(le.embfecentrega,'dd/mm/yyyy')as embfecentrega,le.embcoms,le.embtiporechazo "
+                + " from Liembarques le,Liclientes lc,Lipoblaciones lp "
+                + " where (lp.pobclave=le.embpoblacion) and (lc.clinumero=le.embcliente and lc.cliempresa=le.embempresa)  "
+                + fecha
+                + tipoCliente
+                + " and le.embempresa=" + idEmpresa
+                + estatus
+                + orderBy;
+    }
+
+    public static String BuscarExistencias(String sqlLike, String sqlOrderBy) {
+        return "select lp.prdclave,lp.prddescripcion,lp.prdlinea,lp.prdfamilia,lp.prdunidad,li.invreal,li.invresevado,li.invalmacen  "
+                + " from Liproductos lp,Liinventario li "
+                + " where li.invempresa=lp.prdempresa and li.invproducto=lp.prdclave and lp.prdempresa=?1 "
+                + " and li.invalmacen=?2 and li.invreal>0 " + sqlLike + " " + sqlOrderBy;
+    }
+
+    public static String ObtenerFacturas(String sqlBusq) {
+        return "select le.embclave,le.embref,le.embfolio,to_char(le.embfechafac,'dd/mm/yyyy')as embfechafac,le.embenvio "
+                + " from Liembarques le,Liclientes lc,Lipoblaciones lp "
+                + " where le.embempresa=?1 and (lc.clinumero=le.embcliente and lc.cliempresa=le.embempresa) "
+                + " and (lp.pobclave=le.embpoblacion) and " + sqlBusq;
+    }
+
+    public static String ContFacturas(String idFactura) {
+        return "select count(le.embfolio)as nomFact "
+                + " from Liembarques le,Liclientes lc,Lipoblaciones lp "
+                + " where le.embempresa.empclave=?1 and (lc.clinumero=le.embcliente and lc.cliempresa=le.embempresa) "
+                + " and (lp.pobclave=le.embpoblacion) " + idFactura;
+    }
+
+    public static String getSaldoMov(Integer empresa, String producto, String Almacen, String fecha) {
+        return "SELECT NVL(SUM(DRECANTIDAD), 0) as saldo FROM lidetremisiones "
+                + " where dreempresa = " + empresa + " and dreproducto = '" + producto + "' and drealmacen = " + Almacen + " and "
+                + " trunc(drefecha) < trunc(to_date('" + fecha + "'))";
+
+    }
+
+    public static String getConMovProd(String FechIn, String FechFi, String idProdct) {
+        return "select ld.dreproducto,to_char(ld.drefecha,'dd/mm/yyyy')as drefecha,ld.dreremision,ld.dreubicacion,lr.remreferencia,lm.movdescripcion,ld.drecantidad "
+                + " from lidetremisiones ld,limovalmacen lm,liremisiones lr "
+                + " where lm.movclave=ld.dretipo and lr.remfolio=ld.dreremision and ld.dreempresa=?1 and ld.drealmacen=?2 and "
+                + " trunc(ld.drefecha) between trunc(to_date('" + FechIn + "')) and trunc(to_date('" + FechFi + "'))  "
+                + " and ld.dreproducto='" + idProdct + "' "
+                + " order by ld.drefecha,dreremision ";
+    }
+
+    public static String getProductosEmpresa(String Producto) {
+        return "SELECT prdclave, prddescripcion FROM liproductos WHERE prdempresa = ?1 " + Producto + " ORDER BY prdclave";
+    }
+
+    public static String getDetMovimProducts() {
+        return "select ld.dreproducto,lp.prddescripcion,ld.drelote,to_char(ld.drefecfac,'dd/mm/yyyy')as drefecfac,ld.dreubicacion,ld.drecantidad,ld.drecoms "
+                + " from lidetremisiones ld, liproductos lp "
+                + " where  lp.prdclave = ld.dreproducto and lp.prdempresa = ld.dreempresa and  "
+                + " ld.dreremision = ?1";
+    }
+}

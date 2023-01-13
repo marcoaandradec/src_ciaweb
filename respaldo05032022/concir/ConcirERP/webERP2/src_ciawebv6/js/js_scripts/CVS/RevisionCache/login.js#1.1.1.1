@@ -1,0 +1,251 @@
+/* 
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ * autor: m@rco.@ndr@de
+ */
+Ext.require([
+    'Ext.form.*',
+    'Ext.Img',
+    'Ext.tree.*',
+    'Ext.data.*',
+    'Ext.tip.*'
+    ]);
+var ckUtil = new CJL_CookieUtil("cookie_tema", 1450);
+Ext.onReady(function() {
+    Ext.QuickTips.init();
+    var form = Ext.create('Ext.form.Panel', {
+        id:'formLogin',
+        renderTo: 'divLogin',
+        frame: true,
+        height: 270,
+        width: 350,
+        bodyPadding: 10,
+        bodyBorder: true,
+        autoHeight: true,
+        title: '- Bienvenido Ingrese su usuario y contraseña -',
+        fieldDefaults: {
+            labelAlign: 'top'
+        //,msgTarget: 'side'
+        },
+        //declaracion de componentes textfield´s en columnas
+        layout:'column',
+        items: [{
+            xtype: 'container',
+            columnWidth: 0.5,
+            items: [Ext.create('Ext.Img', {
+                src: contexto+'/img/logoArgo2.jpg',
+                height:100,
+                width :135
+            })]
+        },{
+            xtype: 'container',
+            columnWidth:0.4,
+            defaultType: 'textfield',
+            items: [{
+                id:'user',
+                name: 'usuario',
+                fieldLabel: 'Usuario',
+                allowBlank: false,
+                maxWidth :250,
+                enableKeyEvents:true,
+                listeners:{
+                    'keypress':
+                    function(txtField,e){
+                        saveFieldToCookie(ckUtil,'user');
+                        if(e.keyCode==13){                           
+                            accesar();
+                        }
+                    }
+                }
+            },{
+                id:'pssw',
+                name: 'contrasena',
+                fieldLabel: 'Contraseña',
+                inputType: 'password',
+                allowBlank: false,
+                maxWidth :250,
+                enableKeyEvents:true,
+                listeners:{
+                    'keypress':
+                    function(txtField,e){
+                        if(e.keyCode==13){
+                            saveFieldToCookie(ckUtil,'user');
+                            accesar();
+                        }
+                    }
+                }
+            }]
+        }],
+        //declaracion de buttons
+        buttons: [{
+            xtype: 'button',
+            id:'btnEntrar',
+            text: 'Enviar',
+            width: 95,
+            handler: function() {
+                accesar();
+            }
+        },{
+            xtype:'button',
+            text:'Limpiar',
+            width:95,
+            handler:function(){
+                this.up('form').getForm().reset();
+                Ext.getCmp('btnEntrar').enable();
+            }
+        }]
+    });
+});
+
+function accesar(){
+    var form=Ext.getCmp('formLogin').getForm();
+    if (form.isValid()) {
+        Ext.getCmp('btnEntrar').disable();
+        form.submit({
+            clientValidation: true,
+            url:  contexto+'/Usuario?bnd=1',
+            success: function(form, action) {
+                var dir=action.result.url;
+                var user=action.result.usua;
+                //window.location =  contexto+dir;
+                document.getElementById("usuario").value=user;
+                document.formLog.submit();
+            },
+            failure: function(form, action) {
+                var msg1="";
+                msg1=action.result.msg;
+                Ext.Msg.show({
+                    title: 'Datos Incorrectos',
+                    msg: msg1,
+                    buttons: Ext.MessageBox.OK,
+                    icon: Ext.MessageBox.WARNING
+                });
+            }
+        });
+    }else{
+        Ext.Msg.show({
+            title: 'Datos Incompletos',
+            msg: 'Debe completar todos los campos !',
+            buttons: Ext.MessageBox.OK,
+            icon: Ext.MessageBox.WARNING
+        });
+    }
+}
+/*
+Ext.ns('com.punto.pen');
+com.punto.pen.Login = {
+    init: function(){
+        Ext.BLANK_IMAGE_URL = contexto+'/js/ext41/resources/themes/images/gray/tree/s.gif'
+        Ext.QuickTips.init();
+        var ckUtil = new CJL_CookieUtil("cookie_tema", 1450);
+        $('themecss').href = contexto+'/js/ext41/resources/css/ext-all-gray.css';
+        var login = new Ext.form.FormPanel({
+            frame  : true,
+            title  : 'Bienvenido Ingrese su usuario y contraseña',
+            formId : "formIdLoginArgo",
+            url    : contexto+'/Usuario?bnd=1',
+            id     : 'frmLogin',
+            width  : 330,
+            height : 270,
+            standardSubmit:true,
+            layout:'column',
+            items:      [
+                {
+                xtype:'panel',
+                layout:'form',
+                border:false,
+                labelAlign:'top',
+                columnWidth:.46,
+                items:[{
+                    html:'<img src="'+contexto+'/img/logoArgo2.jpg" />'
+                    }]
+                },{
+                xtype:'panel',
+                layout:'form',
+                border:false,
+                labelAlign:'top',
+                columnWidth:.54,
+                items:[{
+                    xtype:'textfield',
+                    fieldLabel: 'Usuario',
+                    id:'user',
+                    width:150,
+                    allowBlank:false,
+                    name:'usuario',
+                    enableKeyEvents:true,
+                    listeners:{
+                        'keypress':
+                        function(txtField,e){
+                            if(e.keyCode==13){
+                                saveFieldToCookie(ckUtil,'user');
+                                accesar();
+                            }
+                        }
+                    }
+                },
+                {
+                    xtype:'textfield',
+                    fieldLabel: 'Contraseña',
+                    id:'pssw',
+                    inputType:'password',
+                    width:150,
+                    allowBlank:false,
+                    name:'contrasena',
+                    enableKeyEvents:true,
+                    listeners:{
+                        'keypress':
+                        function(txtField,e){
+                            if(e.keyCode==13){
+                                saveFieldToCookie(ckUtil,'user');
+                                accesar();
+                            }
+                        }
+                    }
+                },
+                {
+                    xtype:'button',
+                    text:'Recuperar Contraseña',
+                    handler:function(){
+                        var wnd = new com.punto.pen.RecuperaContrasena({});
+                        wnd.show();
+                    }
+                }]
+                }
+            ],
+            buttons:    [
+            {
+                text:'Entrar',
+                id:'btnEntrar',
+                handler:function(){
+                    saveFieldToCookie(ckUtil,'user');
+                    accesar();
+                }
+            },
+            {
+                text:'Limpiar',
+                handler:function(){
+                    login.getForm().reset();
+                }
+            }
+            ],
+            renderTo:   'divLogin',
+            bodyStyle:  'padding: 5px',
+            labelAlign: 'top',
+            buttonAlign:'center'
+        });
+        setFieldFromCookie(ckUtil,"user");
+        setFieldFromCookie(ckUtil,"theme");
+    }
+}
+
+function accesar(){
+    var frm=Ext.getCmp('frmLogin');
+    if(frm.getForm().isValid()){
+        Ext.getCmp('btnEntrar').disable();
+        frm.getForm().getEl().dom.action=frm.url;
+        frm.getForm().submit();
+    }else{
+        Ext.Msg.alert('Datos Incompletos','Debe completar todos los campos');
+    }
+}
+Ext.onReady(com.punto.pen.Login.init,com.punto.pen.Login);*/

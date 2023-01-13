@@ -1,0 +1,60 @@
+/* 
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ * author: m@rco.@ndrade
+ */
+function inhabilitar(){
+    var Menu = Ext.getCmp('tree-panel');
+    Menu.collapse();
+    Menu.setDisabled(true);
+}
+function habilitar(){
+    Ext.getCmp('content-panel').layout.setActiveItem('start-panel');
+    var Menu = Ext.getCmp('tree-panel');
+    Menu.expand(true);
+    Menu.setDisabled(false);
+}
+/* Propiedades y funciones de Combo*/
+ 
+var states = [{
+    "abbr":"AL",
+    "name":"Alabama",
+    "slogan":"The Heart of Dixie"
+},{
+    "abbr":"AK",
+    "name":"Alaska",
+    "slogan":"The Land of the Midnight Sun"
+},{
+    "abbr":"AZ",
+    "name":"Arizona",
+    "slogan":"The Grand Canyon State"
+} ];
+
+function createStore(id,nom,bnd,qry) {
+    
+    Ext.define('datosCombo', {
+        extend: 'Ext.data.Model',
+        fields: [{
+            type: 'string',
+            name: id
+        },{
+            type: 'string',
+            name: nom
+        }]
+    });
+    // The data store holding the states; shared by each of the ComboBox examples below
+    return Ext.create('Ext.data.Store', {
+        autoDestroy: true,
+        autoLoad: true,
+        model: 'datosCombo',
+        proxy: {
+            type: 'ajax',
+            url: contexto+'/ComboLoader?bnd='+bnd+'&qry='+qry+'&idCampo='+id+'&campo='+nom,
+            reader: {
+                type: 'json',
+                successProperty: 'success',
+                root: 'records'
+            }
+        }        
+    });
+}

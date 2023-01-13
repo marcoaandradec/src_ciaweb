@@ -1,0 +1,1061 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.util;
+
+import com.dao.EventManager;
+import com.dao.util.HibernateUtil;
+//import com.entity.Lada;
+//import com.entity.AgendaActividad;
+//import com.entity.Usuario;
+import com.entity.Liusuarios;
+//import com.entity.UsuarioHorarioVariable;
+import com.sql.SQLAgenda;
+import com.sql.SQLCombo;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.List;
+import java.util.Vector;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+
+public class CtrlComboLoader extends HttpServlet {
+    
+    String tipoAct;
+
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=ISO-8859-1");
+        PrintWriter out = response.getWriter();
+        try {
+            String bnd = Utilities.obtenParametro(request, "bnd");
+
+            if (bnd.equals("1")) {
+                out.print(this.getcbUbicacion(request));
+            } else if (bnd.equals("2")) {
+                out.print(this.getcbUbicacion(request));
+            } else if (bnd.equals("3")) {
+                out.print(this.getcbUbicacion(request));
+            } else if (bnd.equals("4")) {
+                out.print(this.getcbUbicacion(request));
+            } else if (bnd.equals("5")) {
+                out.print(this.obtenDatosCombo(request));
+            } else if (bnd.equals("6")) {
+                out.print(this.obtenHoras(request));
+            } else if (bnd.equals("7")) {
+                out.print(this.buscarLada(request));
+            } else if (bnd.equals("8")) {
+                out.print(this.obtenDatosComboPrd(request));
+            } else if (bnd.equals("9")) {
+                out.print(this.obtenDatosComboQSC(request));
+            } else if (bnd.equals("10")) {
+                out.print(this.obtenDatosComboIdCliente(request));
+            } else if (bnd.equals("11")) {
+                out.print(this.obtenQueryCombo(26));
+            } else if (bnd.equals("12")) {
+                int index = Integer.parseInt(Utilities.obtenParametro(request, "index").equals("") ? "0" : Utilities.obtenParametro(request, "index"));
+                out.print(obtenDatosCombo(request, index));
+            } else if (bnd.equals("13")) {
+                out.print(this.getcbUbicacion(request));
+            } else if (bnd.equals("14")) {
+                out.print(this.obtenDatosCombo(request));
+            } else if (bnd.equals("15")) {
+//                out.print(this.obtenDatosFamilia(request));
+            } else if (bnd.equals("16")) {
+                out.print(this.obtenAnios(request));
+            } else if (bnd.equals("17")) {
+                out.print(this.obtenEstatura(request));
+            } else if (bnd.equals("18")) {
+                out.print(this.obtenMeses(request));
+            } else if (bnd.equals("19")) {
+//                out.print(this.obtenDatosPresentaciones(request));
+            } else if (bnd.equals("20")) {
+                out.print(this.obtenDatosComboPrd(request));
+            } else if (bnd.equals("21")) {//obtiene productos_fraquicia
+                out.print(this.obtenDatosCombo(request));
+            } else if (bnd.equals("22")) {//obtiene productos_familia
+                out.print(this.obtenDatosComboPrd(request));
+            } else if (bnd.equals("23")) {//obtiene producto
+                out.print(this.obtenDatosComboPrd(request));
+            } else if (bnd.equals("24")) {//obtiene Areas Atencion
+                out.print(this.obtenDatosCombo(request));
+            } else if (bnd.equals("25")) {//ontiene origen
+                out.print(this.obtenDatosComboPrd(request));
+            } else if (bnd.equals("26")) {
+                out.print(this.obtenDatosCombo(request));
+            } else if (bnd.equals("27")) {
+                out.print(this.obtenDatosComboPrd(request));
+            } else if (bnd.equals("28")) {
+                out.print(this.obtenDatosComboPrd(request));
+            } else if (bnd.equals("29")) {
+                out.print(this.obtenDatosCombo(request));
+            } else if (bnd.equals("30")) {
+//                out.print(this.obtenHorariosNutriologas(request));
+            } else if (bnd.equals("31")) {
+                out.print(this.obtenHorasNuts(request));
+            } else if (bnd.equals("32")) {
+                out.print(this.obtenMinutosNuts(request));
+            } else if (bnd.equals("33")) {
+                this.tipoAct = Utilities.obtenParametro(request, "cmb");
+                out.print(this.obtenDatosCombo(request));
+            } else if (bnd.equals("34")) {//obtiene Areas Atencion
+                out.print(this.obtenDatosComboActporAte(request));
+            } else if (bnd.equals("35")) {//ontiene origen
+                out.print(this.obtenDatosComboActporAtenOrigen(request));
+            } else if (bnd.equals("36")) {
+                Liusuarios u = Utilities.ReactivarSession(request);
+                int Origen = 0;
+                Origen = u.getUsuidorigen().getOidorigen();
+                request.setAttribute("prd", String.valueOf(Origen));
+                out.print(this.obtenDatosComboPrd(request));
+            } else if (bnd.equals("37")) {
+                out.print(this.obtenDatosCombo(request));
+            } else if (bnd.equals("38")) {
+                out.print(this.obtenDatosCombo(request));
+            } else if (bnd.equals("39")) {
+                out.print(this.obtenDatosCombo(request));
+            } else if (bnd.equals("40")) {
+                out.print(this.getMeses(request));
+            } else if (bnd.equals("41")) {
+                out.print(this.getAnios(request));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            HibernateUtil.closeSession();
+            out.close();
+        }
+    }
+
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    /**
+     * Handles the HTTP <code>GET</code> method.
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
+    }
+
+    /**
+     * Handles the HTTP <code>POST</code> method.
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
+    }
+
+    /**
+     * Returns a short description of the servlet.
+     * @return a String containing servlet description
+     */
+    @Override
+    public String getServletInfo() {
+        return "Short description";
+    }// </editor-fold>
+
+    public String obtenHorasNuts(HttpServletRequest request) {
+        String record = "";
+        Liusuarios usr = Utilities.ReactivarSession(request);
+        if (usr != null) {
+            int idDia = Integer.parseInt(Utilities.obtenParametro(request, "idDia"));
+            String fecha = Utilities.obtenParametro(request, "fecha");
+            int idUsr = Integer.parseInt(Utilities.obtenParametro(request, "idUsr"));
+            int inicio = Integer.parseInt(Utilities.obtenParametro(request, "inicio"));
+
+            String horaEntrada = "";
+            String horaSalida = "";
+
+            fecha = fecha.split("-")[2].substring(0, 2) + "/" + fecha.split("-")[1] + "/" + fecha.split("-")[0];
+
+            String queryHorario = "Select uhv From UsuarioHorarioVariable uhv Where uhv.uhvIdUsuario.uIdUsuario = " + (idUsr == 0 ? usr.getUsuclave() : idUsr) + " and uhv.uhvNumDiaSemana = " + idDia;
+            List lstHorario = EventManager.getArray(queryHorario);
+            if (!lstHorario.isEmpty()) {
+//                UsuarioHorarioVariable objUHV = (UsuarioHorarioVariable) lstHorario.get(0);
+//                horaEntrada = objUHV.getUhvIdHorario().getUhoHoraEntradaLv();
+//                horaSalida = objUHV.getUhvIdHorario().getUhoHoraSalidaLv();
+            }
+            int hIni = Integer.parseInt(horaEntrada.split(":")[0]);
+            int hSal = Integer.parseInt(horaSalida.split(":")[0]);
+            record = "{records:[";
+
+            for (int i = (inicio == 0 ? hIni : inicio); i < hSal; i++) {
+                String h = (i < 10 ? "0" + i : "" + i);
+                record += "{idHoraInicio:'" + h + "',horaInicio:'" + h + "'},";
+            }
+
+            record = record.substring(0, record.length() - 1) + "]}";
+
+        }
+
+        return record;
+    }
+
+    public String obtenMinutosNuts(HttpServletRequest request) {
+        String record = "";
+        Liusuarios usr = Utilities.ReactivarSession(request);
+        if (usr != null) {
+
+            int inicio = Integer.parseInt(Utilities.obtenParametro(request, "inicio"));
+
+            record = "{records:[";
+
+            for (int i = inicio; i < 60; i++) {
+                String h = (i < 10 ? "0" + i : "" + i);
+                record += "{idHoraInicio:'" + h + "',horaInicio:'" + h + "'},";
+            }
+
+            record = record.substring(0, record.length() - 1) + "]}";
+
+        }
+
+        return record;
+    }
+
+   /* public String obtenHorariosNutriologas(HttpServletRequest request) {
+        SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+        String record = "{records:[{idHoraInicio:'00:00',horaInicio:'00:00'},{idHoraInicio:'00:30',horaInicio:'00:30'}]}";
+        Liusuarios usr = Utilities.ReactivarSession(request);
+        if (usr != null) {
+            int idDia = Integer.parseInt(Utilities.obtenParametro(request, "idDia"));
+            String fecha = Utilities.obtenParametro(request, "fecha");
+            int idUsr = Integer.parseInt(Utilities.obtenParametro(request, "idUsr"));
+
+            String horaEntrada = "";
+            String horaSalida = "";
+
+            fecha = fecha.split("-")[2].substring(0, 2) + "/" + fecha.split("-")[1] + "/" + fecha.split("-")[0];
+
+            String queryHorario = "Select uhv From UsuarioHorarioVariable uhv Where uhv.uhvIdUsuario.uIdUsuario = " + (idUsr == 0 ? usr.getUsuclave() : idUsr) + " and uhv.uhvNumDiaSemana = " + idDia;
+            List lstHorario = EventManager.getArray(queryHorario);
+            if (!lstHorario.isEmpty()) {
+//                UsuarioHorarioVariable objUHV = (UsuarioHorarioVariable) lstHorario.get(0);
+//                horaEntrada = objUHV.getUhvIdHorario().getUhoHoraEntradaLv();
+//                horaSalida = objUHV.getUhvIdHorario().getUhoHoraSalidaLv();
+            }
+            int hIni = Integer.parseInt(horaEntrada.split(":")[0]);
+            int hSal = Integer.parseInt(horaSalida.split(":")[0]);
+
+            Usuario u = null;
+
+            if (idUsr != 0) {
+                u = (Usuario) EventManager.getSingleList(Usuario.class, idUsr);
+            }
+
+            Vector vecCtsUsr = new Vector();
+            vecCtsUsr.add(idUsr != 0 ? u : usr);
+            //vecCtsUsr.add(u);
+//            vecCtsUsr.add(fecha);
+            List lstStatus = new ArrayList();
+            lstStatus.add(2);
+            vecCtsUsr.add(lstStatus);
+            List lstCtsUsr = EventManager.getArrayParameter(SQLAgenda.getActividadesUsuario(fmt.format(Fecha.getFechaExtJS(fecha))), vecCtsUsr);
+
+            String[] horasInicio = new String[lstCtsUsr.size()];
+            String[] horasFin = new String[lstCtsUsr.size()];
+
+            if (!lstCtsUsr.isEmpty()) {
+                for (int i = 0; i < lstCtsUsr.size(); i++) {
+                    AgendaActividad objAA = (AgendaActividad) lstCtsUsr.get(i);
+                    horasInicio[i] = objAA.getAacHoraInicio();
+                    horasFin[i] = objAA.getAacHoraFin();
+                }
+            }
+
+            String horasFalsas = "";
+
+            for (int i = 0; i < horasInicio.length; i++) {
+                int hI = Integer.parseInt(horasInicio[i].split(":")[0]);
+                int mI = Integer.parseInt(horasInicio[i].split(":")[1]);
+                int hF = Integer.parseInt(horasFin[i].split(":")[0]);
+                int mF = Integer.parseInt(horasFin[i].split(":")[1]);
+                hF = (mF == 0 ? hF : hF + 1);
+                for (int j = hI; j < hF; j++) {
+                    for (int k = mI; k < 60; k += 30) {
+                        horasFalsas += (j < 10 ? "0" + j : "" + j) + ":" + (k < 10 ? "0" + k : "" + k) + "&%";
+                    }
+                }
+            }
+
+            String hFalsas[] = horasFalsas.split("&%");
+
+            record = "{records:[";
+            for (int i = hIni; i < hSal; i++) {
+                for (int j = 0; j < 60; j += 30) {
+                    String strHora = (i < 10 ? "0" + i : "" + i);
+                    String strMin = (j < 10 ? "0" + j : "" + j);
+                    String h = strHora + ":" + strMin;
+                    Boolean agregarHora = true;
+                    for (int k = 0; k < hFalsas.length; k++) {
+                        if (h.equals(hFalsas[k])) {
+                            agregarHora = false;
+                            break;
+                        }
+                    }
+                    if (agregarHora == true) {
+                        record += "{idHoraInicio:'" + h + "',horaInicio:'" + h + "'},";
+                    }
+                }
+//                String j = (i < 10 ? "0" + i : "" + i);
+//                record += "{idHoraInicio:'" + j + ":00',horaInicio:'" + j + ":00'},";
+//                record += "{idHoraInicio:'" + j + ":30',horaInicio:'" + j + ":30'},";
+            }
+
+            record = record.substring(0, record.length() - 1) + "]}";
+
+
+        }
+
+        return record;
+
+    }*/
+
+    public String obtenDatosComboQSC(HttpServletRequest request) {
+        String records = "{records:[]}";
+        Vector vecParams = new Vector();
+        String strTipo = Utilities.obtenParametro(request, "tipo");
+        String strTema = Utilities.obtenParametro(request, "tema");
+        vecParams.add(strTipo);
+        vecParams.add(strTema);
+        List lst = EventManager.getArrayParameter(this.obtenQueryCombo(Integer.parseInt(Utilities.obtenParametro(request, "qry"))), vecParams);
+
+        if (!lst.isEmpty()) {
+            records = "{records:[";
+            for (int i = 0; i < lst.size(); i++) {
+                Object[] obj = (Object[]) lst.get(i);
+
+                records += "{'" + Utilities.obtenParametro(request, "idCampo") + "': '" + obj[0] + "',";
+                records += "'" + Utilities.obtenParametro(request, "campo") + "': '" + obj[1] + "'},";
+            }
+            records = records.substring(0, records.length() - 1) + "]}";
+        }
+        return records;
+    }
+
+    public String buscarLada(HttpServletRequest request) {
+        String strJsonRes = "{succes:false}";
+        try {
+            String edo = Utilities.obtenParametro(request, "nomEdo");
+
+            String dmn = Utilities.obtenParametro(request, "nomMpo");
+            if (!edo.equals("") && !dmn.equals("")) {
+                Vector vecParams = new Vector();
+                vecParams.add("%" + edo + "%");
+                vecParams.add("%" + dmn + "%");
+
+                List lst = EventManager.getArray("SELECT ld.lLada, ld.lDigitos FROM Lada ld WHERE UPPER(ld.lEstado) like '%" + edo.toUpperCase() + "%' AND UPPER(ld.lCiudad) like '%" + dmn.toUpperCase() + "%'");
+                if (lst != null && lst.size() > 0 && !lst.isEmpty()) {
+                    // Lada oLada = (Lada) lst.get(0);
+                    Object[] objElements = (Object[]) lst.get(0);
+                    String strLada = (String) objElements[0];
+                    String strDigitos = (String) objElements[1];
+
+                    strJsonRes = "{succes:true, lada:'" + strLada + "', digitos:'" + strDigitos + "'}";
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return strJsonRes;
+    }
+
+    public String obtenHoras(HttpServletRequest request) {
+        String records = "{records:[{idhDe:'7:00',hDe:'7:00'}]}";
+        String j;
+        records = "{records:[";
+        for (int i = 7; i < 23; i++) {
+            j = "" + i;
+            if (i < 10) {
+                j = "0" + i;
+            }
+            records += "{idhDe:'" + j + ":00',hDe:'" + j + ":00'},";
+        }
+        records = records.substring(0, records.length() - 1) + "]}";
+
+        return records;
+    }
+
+    public String obtenAnios(HttpServletRequest request) {
+        String records = "{records:[{idAnPadecimiento:'1910',AnPadecimiento:'1910'}]}";
+        records = "{records:[";
+        Calendar cal = new GregorianCalendar();
+        Date fechaActual = new Date();
+
+        for (int i = cal.get(cal.YEAR); i > 1930; i--) {
+            records += "{idAnPadecimiento:'" + i + "',AnPadecimiento:'" + i + "'},";
+        }
+        records = records.substring(0, records.length() - 1) + "]}";
+        return records;
+    }
+
+    public String obtenEstatura(HttpServletRequest request) {
+        String records = "{records:[{idestatura:'10',estatura:'220'}]}";
+        records = "{records:[";
+        for (int i = 10; i <= 220; i++) {
+            records += "{idestatura:'" + i + "',estatura:'" + i + "'},";
+        }
+        records = records.substring(0, records.length() - 1) + "]}";
+        return records;
+    }
+
+    public String obtenMeses(HttpServletRequest request) {
+        String records = "{records:[]}";
+        records = "{records:[";
+        for (int i = 1; i <= 36; i++) {
+            records += "{'" + Utilities.obtenParametro(request, "idCampo") + "': '" + i + "',";
+            records += "'" + Utilities.obtenParametro(request, "campo") + "': '" + i + "'},";
+        }
+        records = records.substring(0, records.length() - 1) + "]}";
+        return records;
+    }
+
+    public String obtenDatosCombo(HttpServletRequest request) {
+        String records = "{records:[]}";
+        List lst = EventManager.getArray(this.obtenQueryCombo(Integer.parseInt(Utilities.obtenParametro(request, "qry").equals("") ? "0" : Utilities.obtenParametro(request, "qry"))));
+
+        if (!lst.isEmpty()) {
+            records = "{records:[";
+            for (int i = 0; i < lst.size(); i++) {
+                Object[] obj = (Object[]) lst.get(i);
+
+                records += "{'" + Utilities.obtenParametro(request, "idCampo") + "': '" + obj[0] + "',";
+                records += "'" + Utilities.obtenParametro(request, "campo") + "': '" + obj[1] + "'},";
+            }
+            records = records.substring(0, records.length() - 1) + "]}";
+        }
+        return records;
+    }
+    //
+
+    public String obtenDatosComboActporAte(HttpServletRequest request) {
+        String records = "{records:[]}";
+        List lst = EventManager.getArray(this.obtenQueryCombo(Integer.parseInt(Utilities.obtenParametro(request, "qry").equals("") ? "0" : Utilities.obtenParametro(request, "qry"))));
+
+        if (!lst.isEmpty()) {
+            records = "{records:[";
+            for (int i = 0; i < lst.size(); i++) {
+                Object[] obj = (Object[]) lst.get(i);
+
+                records += "{'" + Utilities.obtenParametro(request, "idCampo") + "': '" + obj[0] + "',";
+                records += "'" + Utilities.obtenParametro(request, "campo") + "': '" + obj[1] + "'},";
+            }
+            records = records.substring(0, records.length() - 1) + "]}";
+        }
+        return records.replace("ADMINISTRACI�N", "COORDINACI�N");
+    }
+    //
+
+    public String obtenDatosCombo(HttpServletRequest request, int index) {
+        String records = "{records:[]}";
+        List lst = null;
+        if (index > 0) {
+            String valor = "";
+            Vector vecParams = new Vector();
+            for (int y = 0; y < index; y++) {
+                valor = Utilities.obtenParametro(request, "prm" + index);
+                vecParams.add(Integer.parseInt(valor));
+            }
+            lst = EventManager.getArrayParameter(this.obtenQueryCombo(Integer.parseInt(Utilities.obtenParametro(request, "qry"))), vecParams);
+        }
+        if (lst != null) {
+            if (!lst.isEmpty()) {
+                records = "{records:[";
+                for (int i = 0; i < lst.size(); i++) {
+                    Object[] obj = (Object[]) lst.get(i);
+
+                    records += "{'" + Utilities.obtenParametro(request, "idCampo") + "': '" + obj[0] + "',";
+                    records += "'" + Utilities.obtenParametro(request, "campo") + "': '" + obj[1] + "'},";
+                }
+                records = records.substring(0, records.length() - 1) + "]}";
+            }
+        }
+        return records;
+    }
+
+    public String obtenDatosComboPrd(HttpServletRequest request) {
+        String records = "{records:[]}";
+        String valor = Utilities.obtenParametro(request, "prd");
+        List lst = null;
+        if (!valor.equals("")) {
+            Vector vecParams = new Vector();
+            vecParams.add(Integer.parseInt(valor));
+            lst = EventManager.getArrayParameter(this.obtenQueryCombo(Integer.parseInt(Utilities.obtenParametro(request, "qry"))), vecParams);
+        } else {
+            lst = EventManager.getArray(this.obtenQueryCombo(Integer.parseInt(Utilities.obtenParametro(request, "qry"))));
+        }
+
+        if (!lst.isEmpty()) {
+            records = "{records:[";
+            for (int i = 0; i < lst.size(); i++) {
+                Object[] obj = (Object[]) lst.get(i);
+
+                records += "{'" + Utilities.obtenParametro(request, "idCampo") + "': '" + obj[0] + "',";
+                records += "'" + Utilities.obtenParametro(request, "campo") + "': '" + obj[1] + "'},";
+            }
+            records = records.substring(0, records.length() - 1) + "]}";
+        }
+        return records;
+    }
+    //
+
+    public String obtenDatosComboActporAtenOrigen(HttpServletRequest request) {
+        String records = "{records:[]}";
+        String valor = Utilities.obtenParametro(request, "prd");
+        List lst = null;
+        if (!valor.equals("")) {
+            Vector vecParams = new Vector();
+            vecParams.add(Integer.parseInt(valor));
+            lst = EventManager.getArrayParameter(this.obtenQueryCombo(Integer.parseInt(Utilities.obtenParametro(request, "qry"))), vecParams);
+        } else {
+            lst = EventManager.getArray(this.obtenQueryCombo(Integer.parseInt(Utilities.obtenParametro(request, "qry"))));
+        }
+
+        if (!lst.isEmpty()) {
+            records = "{records:[";
+            for (int i = 0; i < lst.size(); i++) {
+                Object[] obj = (Object[]) lst.get(i);
+
+                records += "{'" + Utilities.obtenParametro(request, "idCampo") + "': '" + obj[0] + "',";
+                records += "'" + Utilities.obtenParametro(request, "campo") + "': '" + obj[1] + "'},";
+            }
+            records = records.substring(0, records.length() - 1) + "]}";
+        }
+        return records.replace("Coordinaci�n Pen", "Coordinaci�n");
+    }
+    //
+
+    public String getcbUbicacion(HttpServletRequest request) {
+        String records = "{records:[]}";
+        String edo = Utilities.obtenParametro(request, "edo");
+        String dmn = Utilities.obtenParametro(request, "dm");
+        String col = Utilities.obtenParametro(request, "cl");
+        List lst = null;
+        if (!edo.equals("")) {
+            Vector vCP = new Vector();
+            vCP.add(edo);
+            if (!dmn.equals("")) {
+                vCP.add(dmn);
+            }
+            if (!col.equals("")) {
+                vCP.add(col);
+            }
+            lst = EventManager.getArrayParameter(this.obtenQueryCombo(Integer.parseInt(Utilities.obtenParametro(request, "qry"))), vCP);
+        } else {
+            lst = EventManager.getArray(this.obtenQueryCombo(Integer.parseInt(Utilities.obtenParametro(request, "qry"))));
+        }
+
+        if (lst != null) {
+            if (!lst.isEmpty()) {
+                records = "{records:[";
+                for (int i = 0; i < lst.size(); i++) {
+                    String strValor = lst.get(i).toString();
+
+                    records += "{'" + Utilities.obtenParametro(request, "idCampo") + "': '" + i + "',";
+                    records += "'" + Utilities.obtenParametro(request, "campo") + "': '" + strValor + "'},";
+                }
+                records = records.substring(0, records.length() - 1) + "]}";
+            }
+        }
+        return records;
+    }
+
+    public String obtenDatosComboIdCliente(HttpServletRequest request) {
+        String records = "{records:[]}";
+        String valor = Utilities.obtenParametro(request, "prmIdC");
+        List lst = null;
+        if (!valor.equals("")) {
+            Vector vecParams = new Vector();
+            vecParams.add(Integer.parseInt(valor));
+            lst = EventManager.getArrayParameter(this.obtenQueryCombo(Integer.parseInt(Utilities.obtenParametro(request, "qry"))), vecParams);
+        } else {
+            lst = EventManager.getArray(this.obtenQueryCombo(Integer.parseInt(Utilities.obtenParametro(request, "qry"))));
+        }
+
+        if (!lst.isEmpty()) {
+            records = "{records:[";
+            for (int i = 0; i < lst.size(); i++) {
+                Object[] obj = (Object[]) lst.get(i);
+
+                records += "{'" + Utilities.obtenParametro(request, "idCampo") + "': '" + obj[0] + "',";
+                records += "'" + Utilities.obtenParametro(request, "campo") + "': '" + obj[1] + "'},";
+            }
+            records = records.substring(0, records.length() - 1) + "]}";
+        }
+        return records;
+    }
+
+  /*  public String obtenDatosFamilia(HttpServletRequest request) {
+        String records = "{records:[]}";
+        List lst = EventManager.getArray(this.obtenQueryCombo(Integer.parseInt(Utilities.obtenParametro(request, "qry").equals("") ? "0" : Utilities.obtenParametro(request, "qry"))));
+        int idc = Integer.parseInt(Utilities.obtenParametro(request, "idc").equals("") ? "0" : Utilities.obtenParametro(request, "idc"));
+
+        if (idc > 0) {
+            Vector vecFams = new Vector();
+            vecFams.add(idc);
+            List lstFams = EventManager.getArrayParameter(SQLCombo.verFamiliasCliente(), vecFams);
+            if (!lstFams.isEmpty()) {
+                lst = EventManager.getArray(SQLCombo.obtenProductoFamiliaNo(lstFams));
+
+            }
+        }
+
+        if (!lst.isEmpty()) {
+            records = "{records:[";
+            for (int i = 0; i < lst.size(); i++) {
+                Object[] obj = (Object[]) lst.get(i);
+
+                records += "{'" + Utilities.obtenParametro(request, "idCampo") + "': '" + obj[0] + "',";
+                records += "'" + Utilities.obtenParametro(request, "campo") + "': '" + obj[1] + "'},";
+            }
+            records = records.substring(0, records.length() - 1) + "]}";
+        }
+        return records;
+    }
+
+    public String obtenDatosPresentaciones(HttpServletRequest request) {
+        String records = "{records:[]}";
+        int prd = Integer.parseInt(Utilities.obtenParametro(request, "prd"));
+        Vector vecPrd = new Vector();
+        vecPrd.add(prd);
+        List lst = EventManager.getArrayParameter(this.obtenQueryCombo(Integer.parseInt(Utilities.obtenParametro(request, "qry").equals("") ? "0" : Utilities.obtenParametro(request, "qry"))), vecPrd);
+        int idc = Integer.parseInt(Utilities.obtenParametro(request, "idc").equals("") ? "0" : Utilities.obtenParametro(request, "idc"));
+
+        if (idc > 0) {
+            Vector vecProds = new Vector();
+            vecProds.add(idc);
+            String queryProds = SQLCombo.verProductosCliente();
+            List lstProds = EventManager.getArrayParameter(queryProds, vecProds);
+            if (!lstProds.isEmpty()) {
+                String queryP = SQLCombo.obtenComboProductoNo(lstProds);
+                lst = EventManager.getArrayParameter(queryP, vecPrd);
+            }
+        }
+
+        if (!lst.isEmpty()) {
+            records = "{records:[";
+            for (int i = 0; i < lst.size(); i++) {
+                Object[] obj = (Object[]) lst.get(i);
+
+                records += "{'" + Utilities.obtenParametro(request, "idCampo") + "': '" + obj[0] + "',";
+                records += "'" + Utilities.obtenParametro(request, "campo") + "': '" + obj[1] + "'},";
+            }
+            records = records.substring(0, records.length() - 1) + "]}";
+        }
+        return records;
+    }*/
+
+    public String getMeses(HttpServletRequest request) {
+        String records = "{records:[";
+        records += "{'idMes': '01','mes': 'Enero'},";
+        records += "{'idMes': '02','mes': 'Febrero'},";
+        records += "{'idMes': '03','mes': 'Marzo'},";
+        records += "{'idMes': '04','mes': 'Abril'},";
+        records += "{'idMes': '05','mes': 'Mayo'},";
+        records += "{'idMes': '06','mes': 'Junio'},";
+        records += "{'idMes': '07','mes': 'Julio'},";
+        records += "{'idMes': '08','mes': 'Agosto'},";
+        records += "{'idMes': '09','mes': 'Septiembre'},";
+        records += "{'idMes': '10','mes': 'Octubre'},";
+        records += "{'idMes': '11','mes': 'Noviembre'},";
+        records += "{'idMes': '12','mes': 'Diciembre'}";
+        records += "]}";
+        return records;
+    }
+
+    public String getAnios(HttpServletRequest request) {
+        String records = "{records:[";
+        Calendar cal = new GregorianCalendar();
+        for (int i = cal.get(cal.YEAR) - 5; i <= cal.get(cal.YEAR); i++) {
+            records += "{idanio:'" + i + "',anio:'" + i + "'},";
+        }
+        records = records.substring(0, records.length() - 1) + "]}";
+        return records;
+    }
+
+    private String obtenQueryCombo(int i) {
+        String query = "";
+        switch (i) {
+            case 1:
+                query = SQLCombo.obtenComboEdo();
+                break;
+            case 2:
+                query = SQLCombo.obtenComboDelMun();
+                break;
+            case 3:
+                query = SQLCombo.obtenComboColonia();
+                break;
+            case 4:
+                query = SQLCombo.obtenComboCP();
+                break;
+            case 5:
+               query = SQLCombo.ObtenerTipoCliente();
+                break;
+            case 6:
+                query= SQLCombo.ObtenerAlmacenCIA();
+                break;
+            case 7:
+                query= SQLCombo.obtEstEmbarque();
+                break;
+            case 8:
+                
+                break;
+            case 9:
+                query = "SELECT ld FROM Lada ld WHERE ld.lEstado like ?1 AND ld.lCiudad like ?2";
+                break;
+            case 10:
+                
+                break;
+            case 11:
+                
+                break;
+            case 12:
+                
+                break;
+            case 13:
+                query = SQLCombo.obtenComboEstadoCivil();
+                break;
+            case 14:
+                
+                break;
+            case 15:
+                
+                break;
+            case 16:
+                
+                break;
+            case 17:
+                
+                break;
+            case 18:
+                
+                break;
+            case 19:
+                
+                break;
+            case 20:
+                
+                break;
+            case 21:
+                
+                break;
+            case 22:
+                
+                break;
+            case 23:
+                
+                break;
+            case 24:
+                
+                break;
+            case 25:
+                
+                break;
+            case 26:
+                query = SQLCombo.obtenNombreCombo();
+                break;
+            case 27:
+                query = SQLCombo.obtenAreasAtencion();
+                break;
+            case 28:
+                query = SQLCombo.obtenPuntosContacto();
+                break;
+            case 29:
+                query = SQLCombo.obtenPuestos();
+                break;
+            case 30:
+             
+                break;
+            case 31:
+                query = SQLCombo.obtenFrecuenciaGlucosa();
+                break;
+            case 32:
+                query = SQLCombo.obtenComboTipoEstudioGlucometria();
+                break;
+            case 33:
+             
+                break;
+            case 34:
+                break;
+            case 35:
+             
+                break;
+            case 36:
+                query = SQLCombo.getCombotipoConsumo();
+                break;
+            case 37:
+                query = SQLCombo.getComboCantidadDosis();
+                break;
+            case 38:
+                query = SQLCombo.getComboNumeroTickets();
+                break;
+            case 39:
+                query = SQLCombo.getComboTipoMovimiento();
+                break;
+            case 40:
+                query = SQLCombo.obtenComboTemasTalleres();
+                break;
+            case 41:
+                query = SQLCombo.getComboCasas();
+                break;
+            case 42:
+                query = SQLCombo.obtenPuntoAtencion();
+                break;
+            case 43:
+             
+                break;
+            case 44:
+             
+                break;
+            case 45:
+             
+                break;
+            case 46:
+             
+                break;
+            case 47:
+             
+                break;
+            case 48:
+             
+                break;
+            case 49:
+             
+                break;
+            case 50:
+                query = SQLCombo.obtenComboTiempoMedicamento();
+                break;
+            case 51:
+             
+                break;
+            case 52:
+             
+                break;
+            case 53:
+                query = SQLCombo.obtenComboStatusEnvio();
+                break;
+            case 54:
+                query = SQLCombo.obtenStatusCitas();
+                break;
+            case 55:
+                query = SQLCombo.obtenOrigenGeneral();
+                break;
+            case 56:
+                query = SQLCombo.obtenComboMovimientosEnvio();
+                break;
+            case 57:
+                query = SQLCombo.obtenDestinos();
+                break;
+            case 58:
+                query = SQLCombo.obtenComboTipoProductosMateriales();
+                break;
+            case 59:
+                query = SQLCombo.obtenUsuariosPntCnt();
+                break;
+            case 60:
+                query = SQLCombo.obtenTipoTelContacto();
+                break;
+            case 61:
+                query = SQLCombo.obtenStatusCliente();
+                break;
+            case 62:
+                query = SQLCombo.getTipoEnvio();
+                break;
+            case 63:
+                query = SQLCombo.getMensajeria();
+                break;
+            case 64:
+                query = SQLCombo.obtenComboMedicamentosDiabeticosYOtros();
+                break;
+            case 65:
+                query = SQLCombo.getTemasExtJS();
+                break;
+            case 66:
+               
+                break;
+            case 67:
+                query = SQLCombo.getActividadTipo();
+                break;
+            case 68:
+                query = SQLCombo.getActividad();
+                break;
+            case 69:
+                //query=SQLCombo.ObtenerProductoFamilia();
+                break;
+            case 70:
+                query = SQLCombo.getStatusCASAS();
+                break;
+            case 71://obtiene producto_franquicia
+                query = SQLCombo.obtenerProductoFranquicia();
+                break;
+            case 72://obtiene producto_familia
+                query = SQLCombo.ObtenerProductoFamilia();
+                break;
+            case 73://obtiene producto
+                query = SQLCombo.obtenerproductos();
+                break;
+            case 74:
+                query = SQLCombo.ObtenerAreasAtencion();
+                break;
+            case 75:
+                query = SQLCombo.ObtenerOrigen();
+                break;
+            case 76:
+                query = SQLCombo.ObtenerActividad();
+                break;
+            case 77:
+                query = SQLCombo.ObtenerActividadtipo();
+                break;
+            case 78:
+                query = SQLCombo.getDispositivos();
+                break;
+            case 79:
+                query = SQLCombo.getCoberturas();
+                break;
+            case 80:
+                query = SQLCombo.obtenOrigenGeneralyPaciente();
+                break;
+            case 81:
+                query = SQLCombo.ObtnerUsuarios();
+                break;
+            case 82:
+                query = SQLCombo.ObtenerAsesoriasNuticionales();
+                break;
+            case 83:
+                query = SQLCombo.ObtenerEncuestaCalidadP134();
+                break;
+            case 84:
+                query = SQLCombo.ObtenerEncuestaCalidadP2();
+                break;
+            case 85:
+                query = SQLCombo.ObtenerEncuestaCalidadMedicamentoEntregado();
+                break;
+            case 86:
+                query = SQLCombo.ObtenerEncuestaCalidadBonificacionProductoCompra();
+                break;
+            case 87:
+                query = SQLCombo.ObtenerEncuestaCalidadEmpaqueCondicionesMedicamento();
+                break;
+            case 88:
+                query = SQLCombo.ObtenerEncuestaCalidadSolicitoCanje();
+                break;
+            case 89:
+                query = SQLCombo.ObtenerComboUroflujometria();
+                break;
+            case 90:
+                query = SQLCombo.obtenerFamiliaDiab();
+                break;
+            case 91:
+                query = SQLCombo.obtnerTipoclienteActividad();
+                break;
+            case 92:
+                query = SQLCombo.obtnerTipoArchivo();
+                break;
+            case 93:
+                query = SQLCombo.ObtenerActividadesNutriologasCampo();
+                break;
+            case 94:
+                query = SQLCombo.ObtenerActividadesCapacitacion();
+                break;
+            case 95:
+                query = SQLCombo.ObtenerActividadesReCapacitacion();
+                break;
+            case 96:
+                query = SQLCombo.ObtenerCambioDispositivo();
+                break;
+            case 97:
+               
+                break;
+            case 98:
+                query = SQLCombo.ObtenerTipoVisitas();
+                break;
+            case 99:
+                query = SQLCombo.ObtenerFamilia();
+                break;
+            case 100:
+                query = SQLCombo.ObtenerAreasAtencionRPA();
+                break;
+            case 101:
+                query = SQLCombo.ObtenerProductoFamiliaReXPr();
+                break;
+            case 102:
+                query = SQLCombo.getActividadesNC(this.tipoAct);
+                break;
+            case 103:
+                query = SQLCombo.ObtenerOrigenActporPunAt();
+                break;
+            case 104:
+                query = SQLCombo.ObtenerAreasAtencionRPAActporPunAt();
+                break;
+            case 109:
+                query = "Select co.coIdComboOpcion, co.coNombreComboOpc from ComboOpciones co where co.coIdCombo = 51";
+                break;
+            case 110:
+                query = "Select co.cvIdVacuna, co.cvNombreVacuna from CtlVacunas co";
+                break;
+            case 111:
+                query = "Select co.oIdOrigen, co.oNombreOrigen from CtlOrigen co where oIdAreaAtencion.caaIdAreaAtencion = 2";
+                break;
+            case 112:
+                query = "Select co.coIdComboOpcion, co.coNombreComboOpc from ComboOpciones co where co.coIdCombo = (select cc.ccIdCombo from CtlCombo cc where cc.ccNombreCombo = 'DURACIONES DE ACTIVIDADES')";
+                break;
+            case 113:
+                query = "Select co.coIdComboOpcion, co.coNombreComboOpc from ComboOpciones co where co.coIdCombo = (select cc.ccIdCombo from CtlCombo cc where cc.ccNombreCombo = 'TIPOS TARJETAS DE CREDITO')";
+                break;
+            case 114:
+                query = "SELECT oIdOrigen,oNombreOrigen FROM CtlOrigen WHERE oIdOrigen in(2,3,5,6,7,8,9,10,11,12,35,18,33,27,14,15,36,16,28,17,37,26,29,31,25) AND oHabilitado='true' order by oNombreOrigen";
+                break;
+            case 115:
+                query = "SELECT aIdActividad,aNombreActividad FROM CtlActividad WHERE aIdActividad in( 1,2,3,7,20,21,189) order by aNombreActividad";
+                break;
+            case 116:
+                query = "SELECT coIdComboOpcion,coNombreComboOpc FROM ComboOpciones WHERE co_id_combo=55";
+                break;
+            case 117:
+                query = "Select co.coIdComboOpcion,co.coNombreComboOpc FROM CtlCombo cc,ComboOpciones co where cc.ccIdCombo=co.coIdCombo and cc.ccNombreCombo='TIPO DE CANJE' and co.coHabilitado=1 order by co.coOrden ";
+                break;
+            case 118:
+                query = "Select co1.coIdComboOpcion as idcomboOpc,co1.coNombreComboOpc as NombreOpc FROM CtlCombo cc1,ComboOpciones co1 where cc1.ccIdCombo=co1.coIdCombo and cc1.ccNombreCombo='ESTATUS CANJE' and co1.coHabilitado=1 order by co1.coOrden ";
+                break;
+            case 119:
+                query = "Select co.ctlIdHospital, co.chNombreHospital from CtlHospital co where co.chStatus=1 order by co.chNombreHospital";
+                break;
+            case 120:
+                query = "Select co.coIdComboOpcion, co.coNombreComboOpc from ComboOpciones co where co.coIdCombo = 55 and co.coHabilitado=1";
+                break;
+            case 121:
+                query = "Select co.coIdComboOpcion, co.coNombreComboOpc from ComboOpciones co where co.coIdCombo = 8 and co.coHabilitado=1";
+                break;
+            case 122:
+                query = "Select co.coIdComboOpcion, co.coNombreComboOpc from ComboOpciones co where co.coIdCombo = 57 and co.coHabilitado=1";
+                break;
+            case 123:
+                query = "Select co.oIdOrigen,co.oNombreOrigen from CtlOrigen co where oIdAreaAtencion.caaIdAreaAtencion = 14";
+                break;
+            case 124:
+                query = "SELECT P.pIdProducto,P.pNombreProducto FROM ProductoFamilia PF,Producto P WHERE PF.pfaIdProductoFamilia=P.pIdProductoFamilia AND P.pStatus='Activo' AND PF.pfaIdProductoFamilia<>1 ORDER BY P.pNombreProducto";
+                break;
+            case 125:
+                query = "SELECT co.coIdComboOpcion, co.coNombreComboOpc from ComboOpciones co where co.coIdCombo = 58 and co.coHabilitado=1";
+                break;
+        }
+        return query;
+    }
+}

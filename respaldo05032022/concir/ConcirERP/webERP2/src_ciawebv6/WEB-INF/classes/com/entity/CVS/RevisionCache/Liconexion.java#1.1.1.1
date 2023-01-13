@@ -1,0 +1,151 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package com.entity;
+
+import java.io.Serializable;
+import java.math.BigInteger;
+import java.util.Date;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+/**
+ *
+ * @author marco
+ */
+@Entity
+@Table(name = "LICONEXION")
+
+public class Liconexion implements Serializable {
+    private static final long serialVersionUID = 1L;
+    @Id
+    @Basic(optional = false)
+    @Column(name = "CLAVE")
+    private Integer clave;
+    @Column(name = "SID")
+    private Integer sid;
+    @Column(name = "SERIAL")
+    private Integer serial;
+    @Column(name = "OSUSER")
+    private String osuser;
+    @Column(name = "MACHINE")
+    private String machine;
+    @Column(name = "ENTRADA")
+    @Temporal(TemporalType.DATE)
+    private Date entrada;
+    @Column(name = "SALIDA")
+    @Temporal(TemporalType.DATE)
+    private Date salida;
+    @JoinColumn(name = "USUARIO", referencedColumnName = "USUCLAVE")
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    private Liusuarios usuario;
+
+    public Liconexion() {
+    }
+
+    public Liconexion(Integer clave) {
+        this.clave = clave;
+    }
+
+    public Integer getClave() {
+        return clave;
+    }
+
+    public void setClave(Integer clave) {
+        this.clave = clave;
+    }
+
+    public Integer getSid() {
+        return sid;
+    }
+
+    public void setSid(Integer sid) {
+        this.sid = sid;
+    }
+
+    public Integer getSerial() {
+        return serial;
+    }
+
+    public void setSerial(Integer serial) {
+        this.serial = serial;
+    }
+
+    public String getOsuser() {
+        return osuser;
+    }
+
+    public void setOsuser(String osuser) {
+        this.osuser = osuser;
+    }
+
+    public String getMachine() {
+        return machine;
+    }
+
+    public void setMachine(String machine) {
+        this.machine = machine;
+    }
+
+    public Date getEntrada() {
+        return entrada;
+    }
+
+    public void setEntrada(Date entrada) {
+        this.entrada = entrada;
+    }
+
+    public Date getSalida() {
+        return salida;
+    }
+
+    public void setSalida(Date salida) {
+        this.salida = salida;
+    }
+
+    public Liusuarios getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Liusuarios usuario) {
+        this.usuario = usuario;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (clave != null ? clave.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Liconexion)) {
+            return false;
+        }
+        Liconexion other = (Liconexion) object;
+        if ((this.clave == null && other.clave != null) || (this.clave != null && !this.clave.equals(other.clave))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "com.entity.Liconexion[clave=" + clave + "]";
+    }
+
+}
