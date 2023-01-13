@@ -30,6 +30,10 @@ public class CtrlProducto extends HttpServlet {
 
     RequestPostApi requetPost = new RequestPostApi();
     ReadProps props = new ReadProps();
+    
+    /** Clase modificada en el proyecto clonado
+     * 
+     */
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
